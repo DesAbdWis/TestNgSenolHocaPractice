@@ -1,12 +1,18 @@
 package com.techproed.pages;
 
+import com.techproed.utilities.BrowserUtils;
 import com.techproed.utilities.Driver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 
+import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 public abstract class BasePage {
@@ -44,7 +50,7 @@ public abstract class BasePage {
     parameter :String, String
     */
     public void navBar(String menuName, String subMenu) throws InterruptedException { //Moda, Pantolon
-
+/*
         // By ustMenu = By.xpath("//span[contains(*,'" + menuName + "')]");
         // By altMenu = By.xpath("//span[contains(*,'" + subMenu + "')]");
         // bu 2 satir yerine direk asagida icerde yazabiliriz..lazy way
@@ -56,7 +62,35 @@ public abstract class BasePage {
         WebElement altElm=Driver.get().findElement(By.xpath("//a/span[text()='"+ subMenu +"']"));
         altElm.click();
         Thread.sleep(5000);
+     */
+        //yukaridakileri  try catch ile yapalim
+        WebElement element = Driver.get().findElement(By.xpath("//span[contains(*,'" + menuName + "')]"));
+        WebElement altElm=Driver.get().findElement(By.xpath("//a/span[text()='"+ subMenu +"']"));
+        Actions actions= new Actions(Driver.get());
 
+        try { //hata almamiza ragmen execution nin devam etmesi icin try-catch block kullaniyoruz..exception i catch ediyor
+            element.click();
+        } catch (NoSuchElementException e){  // child exception
+            //e.printStackTrace(); yerine
+            actions.click(element).perform();
+        } catch (Exception e) {   //parent exception
+            BrowserUtils.clickWithJS(element);
+        }
+        //child :NoSuchElementException  iken  parent:Exception
+        //child :Exception  iken parent:Throwable
+        try {
+            altElm.click();
+        } catch (Exception e){
+            actions.click(altElm).perform();
+        }  catch (Throwable t) {
+            JavascriptExecutor js = (JavascriptExecutor) Driver.get();
+            js.executeScript("arguments[0].click();", element, altElm); //virgulden sonra yazilanlar arguments[] arrayine atilir
+             //arguments[0]= element.click()   arguments[1]= altElm.click() olacaktir
+        }
+
+        //Java Seleniumda sendKeys() yerine JavaScript Executor ile yapabiliriz..js.executeScript(arguments[0].value("asdf"))
+        //Actions class kullanmadan Javascript Executor ile hoverover yapilabilir js.executeScript("arguments[0].scrollIntoView(true);", element);
+    //sonsuz bir loop dan try-catch ile exception alarak cikabiliriz
     }
 
     public void navBar(String menuName) throws InterruptedException {  // isim ayni farkli parametre sayisi : overloading ...Moda
@@ -88,13 +122,16 @@ public abstract class BasePage {
         List<WebElement> tumLinkler = Driver.get().findElements(By.xpath("//*[@class='sf-ChildMenuItems-3VA7f']//li/a//*[@class='sf-ChildMenuItems-3VA7f']//li/a"));
         List<String> subMenuText = getElementsText(tumLinkler);
 
-        // int x = subMenuText.size(); //moda=80,  anne=190
+        System.out.println(subMenuText);
 
-        // Random random =new Random();
-        // int index = random.nextInt(subMenuText.size()); lazy way bu 2 satir yerine asagidaki satir yazilabilir..
+        int x = subMenuText.size(); //moda=80,  anne=190
+
+        Random random =new Random();
+        int index = random.nextInt(subMenuText.size()); //lazy way bu 2 satir yerine asagidaki satir yazilabilir..
 
         String subTitle = subMenuText.get(new Random().nextInt(subMenuText.size())); //buradaki get() :int index alir
         navBar("menu",subTitle);
+        Thread.sleep(3000);
 
         // Assert.assertEquals(Driver.get().getTitle(), subTitle); de olur ancak Assertion method icinde yazilmaz..
 

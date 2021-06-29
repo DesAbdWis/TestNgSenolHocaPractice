@@ -17,7 +17,8 @@ import java.util.Date;
 import java.util.List;
 
 
-public class BrowserUtils {
+public class
+BrowserUtils {
     /*
      * takes screenshot
      * @param name
@@ -154,11 +155,11 @@ public class BrowserUtils {
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
-        /**
-         * waits for backgrounds processes on the browser to complete
-         *
-         * @param timeOutInSeconds
-         */
+    /**
+     * waits for backgrounds processes on the browser to complete
+     *
+     * @param timeOutInSeconds
+     */
     public static void waitForPageToLoad(long timeOutInSeconds) {
         ExpectedCondition<Boolean> expectation = new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
@@ -398,10 +399,5 @@ public class BrowserUtils {
     public static void waitForPresenceOfElement(By by, long time) {
         new WebDriverWait(Driver.get(), time).until(ExpectedConditions.presenceOfElementLocated(by));
     }
-
-
-
-
-
 
 }
