@@ -2,6 +2,7 @@ package com.techproed.pages;
 
 import com.techproed.utilities.Driver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -26,8 +27,10 @@ public class DemoQaPage {
     @FindBy (xpath = "//*[@class='rt-body']/div/div/div")
     public List<WebElement> allColums;
 
+    /*
     @FindBy (xpath = "//*[@class='rt-body']/div/div/div")
     public List<WebElement> getFormElements;
+     */
 
     /*
     method olusturalim;
@@ -35,10 +38,18 @@ public class DemoQaPage {
     parameter :String
      */
 
-    public WebElement formElements(String formData){
+    public DemoQaPage getFormElements(String formData, String data){
 
-        return Driver.get().findElement(By.id(formData));
+        Driver.get().findElement(By.id(formData)).sendKeys(data);
+        return this;
     }
+
+    public DemoQaPage getFormElements(String formData, Keys data){
+
+        Driver.get().findElement(By.id(formData)).sendKeys(data);
+        return this;
+    }
+
 
 
 

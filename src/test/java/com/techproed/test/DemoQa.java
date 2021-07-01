@@ -41,7 +41,7 @@ public class DemoQa {
 //        demoQaPage.getFormElements("submit").click();
 
 
-       /*demoQaPage.getFormElements("firstName","ali")
+      demoQaPage.getFormElements("firstName","ali")
                 .getFormElements("lastName","veli")
                 .getFormElements("userEmail","asdfa@gmail.com")
                 .getFormElements("age","28")
@@ -52,7 +52,7 @@ public class DemoQa {
 
         actions.sendKeys("sdf").click().pause(2);
 
-*/
+
         for(WebElement elm:demoQaPage.columNames){
             if(elm.getText().equals("Ahmedd")){
                 System.out.println("PASS");
