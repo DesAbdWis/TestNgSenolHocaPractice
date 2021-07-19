@@ -50,7 +50,6 @@ public class RandomNavbarTest {
 
      */
         Assert.assertTrue(dashboard.checkNavbar("moda"));
-
     }
 }
 
